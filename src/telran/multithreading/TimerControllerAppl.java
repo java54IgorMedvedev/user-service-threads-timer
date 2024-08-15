@@ -3,10 +3,12 @@ package telran.multithreading;
 public class TimerControllerAppl {
 
 	public static void main(String[] args) throws InterruptedException {
-		Timer timer = new Timer("HH:mm:ss", 1000);
+		Timer timer = new Timer();
 		timer.start();
 		Thread.sleep(5000);
-		timer.stopTimer(); 		
+		timer.finish();
 		Thread.sleep(5000);
+
 	}
+
 }

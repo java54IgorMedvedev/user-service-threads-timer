@@ -4,30 +4,31 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Timer extends Thread {
-	private DateTimeFormatter timeFormat;
-	private long resolution;
-	private volatile boolean running = true;
-
-	public Timer(String timePattern, long resolutionMillis) {
-		this.timeFormat = DateTimeFormatter.ofPattern(timePattern);
-		this.resolution = resolutionMillis;
+private static final String DEFAULT_FORMATTER_PATTERN = "HH.mm.ss";
+private static final long DEFAULT_TIMER_RESOLUTION = 1000;
+private volatile boolean running = true;
+private DateTimeFormatter dtf;
+private long timerResolution;
+	public Timer(String pattern, long timerResolution) {
+		dtf = DateTimeFormatter.ofPattern(pattern);
+		this.timerResolution = timerResolution;
 		setDaemon(true);
 	}
-
-	@Override
+	public Timer() {
+		this(DEFAULT_FORMATTER_PATTERN, DEFAULT_TIMER_RESOLUTION);
+	}
 	public void run() {
-		while (running) {
-			System.out.println(LocalTime.now().format(timeFormat));
+		while(running) {
+			System.out.println(LocalTime.now().format(dtf));
 			try {
-				sleep(resolution);
+				sleep(timerResolution);
 			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				running = false; 
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
-
-	public void stopTimer() {
+	public void finish() {
 		running = false;
 	}
 }
